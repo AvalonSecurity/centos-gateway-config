@@ -1,0 +1,56 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+CREATE DATABASE IF NOT EXISTS `openvpn` DEFAULT CHARACTER SET cp1251 COLLATE cp1251_general_ci;
+USE `openvpn`;
+
+CREATE TABLE IF NOT EXISTS `admin` (
+  `login` varchar(160) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+CREATE TABLE IF NOT EXISTS `personal` (
+  `user` varchar(160) NOT NULL,
+  `fio` varchar(180) NOT NULL,
+  `pasport` varchar(180) NOT NULL,
+  `email` varchar(180) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+CREATE TABLE IF NOT EXISTS `sysconfig` (
+  `domain` varchar(120) NOT NULL,
+  `dns` varchar(180) NOT NULL,
+  `gateway` varchar(180) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `login` varchar(160) NOT NULL,
+  `passwd` varchar(280) NOT NULL,
+  `mac` varchar(160) NOT NULL,
+  `ip` varchar(160) NOT NULL,
+  `valid` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+
+ALTER TABLE `admin`
+  ADD KEY `login` (`login`);
+
+ALTER TABLE `personal`
+  ADD KEY `user` (`user`);
+
+ALTER TABLE `users`
+  ADD KEY `login` (`login`);
+
+
+ALTER TABLE `admin`
+  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`login`) REFERENCES `users` (`login`) ON UPDATE CASCADE;
+
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`login`) REFERENCES `personal` (`user`) ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
